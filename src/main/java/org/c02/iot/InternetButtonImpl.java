@@ -1,11 +1,10 @@
 package org.c02.iot;
 
-import java.awt.Color;
-
 import org.c02.iot.cloud.api.ParticleApiWrapper;
-import org.c02.iot.cloud.api.ParticleApiWrapperImpl;
 import org.c02.iot.cloud.api.ParticleException;
-import org.c02.iot.cloud.examples.DemoConstants;
+
+import java.awt.*;
+import java.io.IOException;
 
 public class InternetButtonImpl implements InternetButtonApi {
 
@@ -16,7 +15,28 @@ public class InternetButtonImpl implements InternetButtonApi {
 	}
 
 	public int getButtonCounter(ButtonDirection button) {
-		// TODO Auto-generated method stub
+		int buttonCount = 0;
+		switch(button) {
+			case North:
+				buttonCount = 1;
+				break;
+			case South:
+				buttonCount = 2;
+				break;
+			case East:
+				buttonCount = 3;
+				break;
+			case West:
+				buttonCount = 4;
+				break;
+		}
+
+		try {
+			return wrapper.readVariable("countButton" + buttonCount);
+		} catch (IOException e) {
+			System.out.println("Could not get button count because the following error: " + e.getMessage());
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
@@ -54,7 +74,11 @@ public class InternetButtonImpl implements InternetButtonApi {
 	}
 
 	public void resetButtonCounters() {
-		// TODO Auto-generated method stub
-		
+		try {
+			wrapper.callMethod("reset", null);
+		} catch (ParticleException e) {
+			System.out.println("Could not rest button counter because of the following error: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 }
