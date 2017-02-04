@@ -73,6 +73,39 @@ public class InternetButtonImpl implements InternetButtonApi {
 		}
 	}
 
+	@Override
+	public int getXValue() {
+		try {
+			return wrapper.readVariable("xValue");
+		} catch (IOException e) {
+			System.out.println("Could not get xValue because the following error: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public int getYValue() {
+		try {
+			return wrapper.readVariable("yValue");
+		} catch (IOException e) {
+			System.out.println("Could not get yValue because the following error: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public int getZValue() {
+		try {
+			return wrapper.readVariable("zValue");
+		} catch (IOException e) {
+			System.out.println("Could not get zValue because the following error: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 	public void resetButtonCounters() {
 		try {
 			wrapper.callMethod("reset", null);

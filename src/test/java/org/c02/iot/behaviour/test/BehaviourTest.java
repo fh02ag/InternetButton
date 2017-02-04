@@ -54,6 +54,21 @@ public class BehaviourTest {
             public void playSound() {
                 Assert.fail();
             }
+
+            @Override
+            public int getXValue() {
+                return 0;
+            }
+
+            @Override
+            public int getYValue() {
+                return 0;
+            }
+
+            @Override
+            public int getZValue() {
+                return 0;
+            }
         };
 
         CountAndShowLed beh = new CountAndShowLed(buttonInstance);

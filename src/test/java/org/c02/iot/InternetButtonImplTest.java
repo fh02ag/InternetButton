@@ -29,7 +29,7 @@ public class InternetButtonImplTest {
 
     @Test
     public void testSetLedValid() throws Exception {
-        impl.setLed(1, new Color(255,255,255));
+        impl.setLed(1, new Color(255, 255, 255));
         verify(wrapper, times(1)).callMethod("led", "01255255255");
     }
 
@@ -61,5 +61,23 @@ public class InternetButtonImplTest {
     public void testResetButtonCounters() throws Exception {
         impl.resetButtonCounters();
         verify(wrapper, times(1)).callMethod("reset", null);
+    }
+
+    @Test
+    public void testGetXValue() throws Exception {
+        impl.getXValue();
+        verify(wrapper, times(1)).readVariable("xValue");
+    }
+
+    @Test
+    public void testGetYValue() throws Exception {
+        impl.getYValue();
+        verify(wrapper, times(1)).readVariable("yValue");
+    }
+
+    @Test
+    public void testGetZValue() throws Exception {
+        impl.getZValue();
+        verify(wrapper, times(1)).readVariable("zValue");
     }
 }
