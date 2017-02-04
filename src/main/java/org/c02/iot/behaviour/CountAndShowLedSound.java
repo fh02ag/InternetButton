@@ -2,8 +2,6 @@ package org.c02.iot.behaviour;
 
 import org.c02.iot.InternetButtonApi;
 
-import java.awt.*;
-
 /**
  * Created by Andre on 04.02.2017.
  */
@@ -15,18 +13,19 @@ public class CountAndShowLedSound extends AbstractBehaviour {
 
     @Override
     public void run() {
-        int buttonCounter = getButtonCount();
-        button.setLed(buttonCounter, Color.GREEN);
+        int buttonCounterNorth = button.getButtonCounter(InternetButtonApi.ButtonDirection.North);
+        int buttonCounterSouth = button.getButtonCounter(InternetButtonApi.ButtonDirection.South);
+        int buttonCounterEast = button.getButtonCounter(InternetButtonApi.ButtonDirection.East);
+        int buttonCounterWest = button.getButtonCounter(InternetButtonApi.ButtonDirection.West);
+        int buttonCounter = buttonCounterNorth + buttonCounterSouth + buttonCounterEast + buttonCounterWest;
+
+        if (isPlayingSoundNecessary(buttonCounter)) {
+            button.playSound();
+            button.resetButtonCounters();
+        }
     }
 
-    public int getButtonCount() {
-        int buttonCounter = button.getButtonCounter(InternetButtonApi.ButtonDirection.North);
-        if (buttonCounter % 12 == 0) {
-            button.allLedsOff();
-        }
-        if (buttonCounter > 12) {
-            buttonCounter %= 12;
-        }
-        return buttonCounter;
+    public boolean isPlayingSoundNecessary(int buttonCounter) {
+        return buttonCounter > 0 ? buttonCounter % 10 == 0 : false;
     }
 }
