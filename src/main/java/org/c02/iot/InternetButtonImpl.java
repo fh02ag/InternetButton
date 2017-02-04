@@ -3,6 +3,9 @@ package org.c02.iot;
 import java.awt.Color;
 
 import org.c02.iot.cloud.api.ParticleApiWrapper;
+import org.c02.iot.cloud.api.ParticleApiWrapperImpl;
+import org.c02.iot.cloud.api.ParticleException;
+import org.c02.iot.cloud.examples.DemoConstants;
 
 public class InternetButtonImpl implements InternetButtonApi {
 
@@ -17,23 +20,41 @@ public class InternetButtonImpl implements InternetButtonApi {
 		return 0;
 	}
 
-	public void setLed(int postition, Color color) {
-		// TODO Auto-generated method stub
+	public void setLed(int position, Color color) {
+		StringBuilder sb = new StringBuilder();
+		if (position < 10) {
+			sb.append("0");
+		}
+		sb.append(position).append(color.getRed()).append(color.getGreen()).append(color.getBlue());
+
+		try {
+			wrapper.callMethod("led", sb.toString());
+		} catch (ParticleException e) {
+			System.out.println("Could not turn leds off because of the following error: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public void allLedsOff() {
-		// TODO Auto-generated method stub
-
+		try {
+			wrapper.callMethod("ledsOff",null);
+		} catch (ParticleException e) {
+			System.out.println("Could not turn leds off because of the following error: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public void playSound() {
-		// TODO Auto-generated method stub
-
+		try {
+			wrapper.callMethod("play", null);
+		} catch (ParticleException e) {
+			System.out.println("Could not play sound because of the following error: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public void resetButtonCounters() {
 		// TODO Auto-generated method stub
 		
 	}
-
 }
