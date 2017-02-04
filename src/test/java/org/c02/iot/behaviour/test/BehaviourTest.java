@@ -56,6 +56,11 @@ public class BehaviourTest {
             }
 
             @Override
+            public void playSound(int sound) {
+
+            }
+
+            @Override
             public int getXValue() {
                 return 0;
             }

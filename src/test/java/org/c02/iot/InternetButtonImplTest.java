@@ -34,6 +34,18 @@ public class InternetButtonImplTest {
     }
 
     @Test
+    public void testPlaySound() throws Exception {
+        impl.playSound();
+        verify(wrapper, times(1)).callMethod("play", null);
+    }
+
+    @Test
+    public void testPlaySoundWithParam() throws Exception {
+        impl.playSound(2);
+        verify(wrapper, times(1)).callMethod("play", "2");
+    }
+
+    @Test
     public void testGetButtonCounterNorth() throws Exception {
         impl.getButtonCounter(InternetButtonApi.ButtonDirection.North);
         verify(wrapper, times(1)).readVariable("countButton1");

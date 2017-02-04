@@ -74,6 +74,16 @@ public class InternetButtonImpl implements InternetButtonApi {
 	}
 
 	@Override
+	public void playSound(int sound) {
+		try {
+			wrapper.callMethod("play", "" + sound);
+		} catch (ParticleException e) {
+			System.out.println("Could not play sound because of the following error: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	@Override
 	public int getXValue() {
 		try {
 			return wrapper.readVariable("xValue");

@@ -20,6 +20,8 @@ public interface InternetButtonApi {
 	
 	void playSound();
 
+	void playSound(int sound);
+
 	int getXValue();
 
 	int getYValue();
