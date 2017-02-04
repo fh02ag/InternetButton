@@ -18,7 +18,8 @@ public class CountAndShowLedDemo {
     public static void main(String[] args) {
         InternetButtonApi button = new InternetButtonImpl(api);
         CountAndShowLed countAndShowLed = new CountAndShowLed(button);
-        Thread t = new Thread(countAndShowLed);
-        t.start();
+        while(true) {
+            countAndShowLed.run();
+        }
     }
 }

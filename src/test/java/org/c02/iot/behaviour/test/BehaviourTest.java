@@ -1,50 +1,82 @@
 package org.c02.iot.behaviour.test;
 
-import java.awt.Color;
-
 import org.c02.iot.InternetButtonApi;
+import org.c02.iot.InternetButtonImpl;
 import org.c02.iot.behaviour.CountAndShowLed;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
+
+import static org.mockito.Mockito.*;
 
 public class BehaviourTest {
 
-	@Test
-	public void testBehaviour() {
+    CountAndShowLed countAndShowLed;
+    InternetButtonImpl button;
 
-		InternetButtonApi buttonInstance = new InternetButtonApi() {
+    @Before
+    public void setUp() throws Exception {
+        button = mock(InternetButtonImpl.class);
+        countAndShowLed = new CountAndShowLed(button);
+    }
 
-			@Override
-			public int getButtonCounter(ButtonDirection button) {
-				if (button == ButtonDirection.North)
-					return 5;
-				return 0;
-			}
+    @Test
+    public void testBehaviour() {
 
-			@Override
-			public void resetButtonCounters() {
-				Assert.fail();
-			}
+        InternetButtonApi buttonInstance = new InternetButtonApi() {
 
-			@Override
-			public void setLed(int postition, Color color) {
-				Assert.assertEquals(5, postition);
-				Assert.assertEquals(Color.GREEN, color);
-			}
+            @Override
+            public int getButtonCounter(ButtonDirection button) {
+                if (button == ButtonDirection.North)
+                    return 5;
+                return 0;
+            }
 
-			@Override
-			public void allLedsOff() {
-				Assert.fail();
-			}
+            @Override
+            public void resetButtonCounters() {
+                Assert.fail();
+            }
 
-			@Override
-			public void playSound() {
-				Assert.fail();
-			}
-		};
+            @Override
+            public void setLed(int postition, Color color) {
+                Assert.assertEquals(5, postition);
+                Assert.assertEquals(Color.GREEN, color);
+            }
 
-		CountAndShowLed beh = new CountAndShowLed(buttonInstance);
+            @Override
+            public void allLedsOff() {
+                Assert.fail();
+            }
 
-		beh.run();
-	}
+            @Override
+            public void playSound() {
+                Assert.fail();
+            }
+        };
+
+        CountAndShowLed beh = new CountAndShowLed(buttonInstance);
+
+        beh.run();
+    }
+
+    @Test
+    public void testGetButtonCountBelow12() throws Exception {
+        when(button.getButtonCounter(InternetButtonApi.ButtonDirection.North)).thenReturn(5);
+        Assert.assertEquals(5, countAndShowLed.getButtonCount());
+    }
+
+    @Test
+    public void testGetButtonCountIs12() throws Exception {
+        when(button.getButtonCounter(InternetButtonApi.ButtonDirection.North)).thenReturn(12);
+        countAndShowLed.run();
+        verify(button, times(1)).allLedsOff();
+    }
+
+    @Test
+    public void testGetButtonCountOver12() throws Exception {
+        when(button.getButtonCounter(InternetButtonApi.ButtonDirection.North)).thenReturn(13);
+        Assert.assertEquals(1, countAndShowLed.getButtonCount());
+    }
 }
